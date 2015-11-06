@@ -1,0 +1,16 @@
+[
+  {
+    "name": "go http",
+    "version": "1.5",
+    "language": "go",
+    "setup": ["go", "build", "webserver.go"],
+    "command": ["./webserver"],
+    "teardown": ["rm", "webserver"]
+  },
+  {
+    "name": "node",
+    "version": "4.2.1",
+    "language": "js",
+    "command": ["node", "webserver.js"]
+  }
+]

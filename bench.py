@@ -1,13 +1,33 @@
 #!/usr/bin/env python
+
+import argparse
+import functools
+import json
 import os
 import re
 import signal
 import subprocess
 import time
 
-wrk_cmd = ['wrk', '-t10', '-d10s', 'http://127.0.0.1:8080/hello']
+parser = argparse.ArgumentParser(description='Run benchmarks')
+parser.add_argument('--config',
+                    dest='config',
+                    default='config.json',
+                    type=str,
+                    help='a configuration file for benchmarking')
 
-def run_cmd(cmd, stage):
+# All benchmarks are run against [wrk](https://github.com/wg/wrk)
+WRK_CMD = ['wrk', '-t10', '-d10s', 'http://127.0.0.1:8080/hello']
+
+HEADERS = ['name', 'version', 'lang', 'avg latency', 'requests/sec', 'transfer/sec']
+
+def run_cmd(stage, cmd):
+    ''' 
+    Given a stage (setup, teardown) and a cmd ['python', 'bench.py'],
+    run the command and wait for it to finish before returning from
+    this function. cmd can optionally be a list of lists to provide
+    the ability to run a series of commands in a stage.
+    ''' 
     if cmd is None:
         print 'No %s command. Skipping.' % stage
         return
@@ -26,24 +46,34 @@ def run_cmd(cmd, stage):
         os.exit(1)
     p.wait() 
 
-def setup(cmd):
-    run_cmd(cmd, 'setup')
 
-def teardown(cmd):
-    run_cmd(cmd, 'teardown')
+setup = functools.partial(run_cmd, 'setup')
+teardown = functools.partial(run_cmd, 'teardown')
 
-def load_config():
-    return [
-        {
-            'name': 'go',
-            'language': 'go',
-            'setup': ['go', 'build', 'webserver.go'],
-            'command': ['./webserver'],
-            'teardown': ['rm', 'webserver']
-        }
-    ]
+
+def load_config(config_file):
+    '''
+    Load a benchmark configuration file. By default,
+    the script uses ./config.json
+    '''
+    with open(config_file) as json_file:
+        return json.load(json_file)
+
 
 def parse_wrk_output(output):
+    '''
+    Takes the following output from the wrk command line
+    tool and converts the desired values into a dictionary.
+
+    Running 10s test @ http://127.0.0.1:8080/hello
+      10 threads and 10 connections
+      Thread Stats   Avg      Stdev     Max   +/- Stdev
+        Latency     0.85ms    4.69ms 104.87ms   97.47%
+        Req/Sec     5.36k     1.58k   11.25k    72.06%
+      534601 requests in 10.10s, 57.10MB read
+    Requests/sec:  52912.31
+    Transfer/sec:      5.65MB
+    '''
     latency_re = re.compile(r"Latency\s*([\.\d\w]*)")
     requests_sec_re = re.compile(r"Requests/sec:\s*([\.\d]*)")
     transfer_sec_re = re.compile(r"Transfer/sec:\s*([\.\d\w]*)")
@@ -55,6 +85,9 @@ def parse_wrk_output(output):
 
 
 def execute(cmd):
+    '''
+    Build benchmark data for a given item in the configuration
+    '''
     p = subprocess.Popen(args=cmd, stdout=subprocess.PIPE)
     for line in iter(p.stdout.readline, b''):
         if line.strip() == 'begin benchmark':
@@ -62,7 +95,7 @@ def execute(cmd):
 
     cmd_str = ' '.join(cmd)
     print 'benchmarking:', cmd_str 
-    b = subprocess.Popen(wrk_cmd, stdout=subprocess.PIPE)
+    b = subprocess.Popen(WRK_CMD, stdout=subprocess.PIPE)
     
     output, err = b.communicate()
 
@@ -74,13 +107,53 @@ def execute(cmd):
     return parse_wrk_output(output)
 
 
-if __name__ == '__main__':
-    config = load_config()
-    for proc in config:
-        setup(proc['setup'])
-        benchmarks = execute(proc['command'])
-        teardown(proc['teardown'])
-        print benchmarks
+def generate_table(headers, rows):
+    '''
+    Given a list of headers and a list of list of rows,
+    generate github flavored markdown for tables
+    '''
+    delim = ' | '
+    table = ''
+    table += delim.join(headers) + '\n'
+    table += delim.join(['-------'] * len(headers)) + '\n'
+    for row in rows:
+        table += delim.join(row) + '\n'
+    return table
 
+
+def update_readme(table):
+    readme_file = open('readme.md')
+    readme = readme_file.read()
+    readme_file.close()
+
+    readme = re.sub('benchmarks\n[\-]*[\s\S]*$', '', readme)
+    readme += 'benchmarks\n'
+    readme += '----------\n'
+    readme += table
+
+    readme_file = open('readme.md', 'w')
+    readme_file.write(readme)
+    readme_file.close()
+
+
+if __name__ == '__main__':
+    args = parser.parse_args()
+    config = load_config(args.config)
+    results = []
+    for proc in config:
+        setup(proc.get('setup'))
+        benchmarks = execute(proc.get('command'))
+        teardown(proc.get('teardown'))
+        results.append((
+            proc['name'],
+            proc.get('version', ''),
+            proc['language'],
+            benchmarks['latency'],
+            benchmarks['requests_sec'],
+            benchmarks['transfer_sec'],
+        ))
+
+    table = generate_table(HEADERS, results)
+    update_readme(table)
     runs = len(config)
     print 'Completed %s run%s' % (runs, 's' if runs > 1 else '')
