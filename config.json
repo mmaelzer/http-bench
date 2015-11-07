@@ -24,5 +24,12 @@
     "version": "2.6.0",
     "language": "lua",
     "command": ["luvit", "lua/luvit.lua"]
+  },
+  {
+    "name": "tornado",
+    "version": "4.3",
+    "language": "python",
+    "command": ["python", "python/tornado_webserver.py"],
+    "wait": 3
   }
 ]

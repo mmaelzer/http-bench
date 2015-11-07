@@ -84,14 +84,20 @@ def parse_wrk_output(output):
     }
 
 
-def execute(cmd):
+def execute(cmd, env=None, wait=None):
     '''
     Build benchmark data for a given item in the configuration
     '''
-    p = subprocess.Popen(args=cmd, stdout=subprocess.PIPE)
-    for line in iter(p.stdout.readline, b''):
-        if line.strip() == 'begin benchmark':
-            break
+    p = subprocess.Popen(args=cmd,
+                         stdout=subprocess.PIPE,
+                         stderr=subprocess.STDOUT,
+                         env=env)
+    if wait is None:
+        for line in iter(p.stdout.readline, b''):
+            if line.strip() == 'begin benchmark':
+                break
+    else:
+        time.sleep(wait)
 
     cmd_str = ' '.join(cmd)
     print 'benchmarking:', cmd_str 
@@ -142,7 +148,9 @@ if __name__ == '__main__':
     results = []
     for proc in config:
         setup(proc.get('setup'))
-        benchmarks = execute(proc.get('command'))
+        benchmarks = execute(proc.get('command'),
+                             env=proc.get('env'),
+                             wait=proc.get('wait'))
         teardown(proc.get('teardown'))
         results.append((
             proc['name'],
