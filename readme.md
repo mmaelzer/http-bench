@@ -12,6 +12,7 @@ benchmarks
 ----------
 name | version | lang | avg latency | requests/sec | transfer/sec
 ------- | ------- | ------- | ------- | ------- | -------
-go stdlib | 1.5 | go | 300.96us | 61573.45 | 6.58MB
-node stdlib | 4.2.1 | js | 549.60us | 18540.67 | 2.76MB
-node cluster | 4.2.1 | js | 534.27us | 27807.72 | 4.14MB
+go stdlib | 1.5 | go | 257.59us | 62244.53 | 6.71MB
+node stdlib | 4.2.1 | js | 554.24us | 18662.05 | 2.78MB
+node cluster | 4.2.1 | js | 591.14us | 27549.87 | 4.10MB
+luvit | 2.6.0 | lua | 1.05ms | 9894.13 | 1.30MB

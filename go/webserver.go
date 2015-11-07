@@ -8,7 +8,7 @@ import (
 )
 
 func handleHello(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html")
+	w.Header().Set("Content-Type", "text/plain")
 	fmt.Fprint(w, "Hello World")
 }
 
