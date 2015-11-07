@@ -12,5 +12,6 @@ benchmarks
 ----------
 name | version | lang | avg latency | requests/sec | transfer/sec
 ------- | ------- | ------- | ------- | ------- | -------
-go http | 1.5 | go | 263.23us | 60899.03 | 6.50MB
-node | 4.2.1 | js | 565.57us | 18030.19 | 2.68MB
+go stdlib | 1.5 | go | 300.96us | 61573.45 | 6.58MB
+node stdlib | 4.2.1 | js | 549.60us | 18540.67 | 2.76MB
+node cluster | 4.2.1 | js | 534.27us | 27807.72 | 4.14MB

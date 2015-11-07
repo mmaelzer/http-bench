@@ -1,6 +1,6 @@
 [
   {
-    "name": "go http",
+    "name": "go stdlib",
     "version": "1.5",
     "language": "go",
     "setup": ["go", "build", "webserver.go"],
@@ -8,9 +8,15 @@
     "teardown": ["rm", "webserver"]
   },
   {
-    "name": "node",
+    "name": "node stdlib",
     "version": "4.2.1",
     "language": "js",
-    "command": ["node", "webserver.js"]
+    "command": ["node", "js/webserver.js"]
+  },
+  {
+    "name": "node cluster",
+    "version": "4.2.1",
+    "language": "js",
+    "command": ["node", "js/cluster.js"]
   }
 ]
