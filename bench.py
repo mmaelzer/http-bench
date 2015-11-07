@@ -79,7 +79,7 @@ def parse_wrk_output(output):
     transfer_sec_re = re.compile(r"Transfer/sec:\s*([\.\d\w]*)")
     return {
         'latency': latency_re.findall(output)[0],
-        'requests_sec': requests_sec_re.findall(output)[0],
+        'requests_sec': float(requests_sec_re.findall(output)[0]),
         'transfer_sec': transfer_sec_re.findall(output)[0]
     }
 
@@ -112,7 +112,6 @@ def execute(cmd, env=None, wait=None):
     p.terminate()
     return parse_wrk_output(output)
 
-
 def generate_table(headers, rows):
     '''
     Given a list of headers and a list of list of rows,
@@ -122,7 +121,11 @@ def generate_table(headers, rows):
     table = ''
     table += delim.join(headers) + '\n'
     table += delim.join(['-------'] * len(headers)) + '\n'
+
     for row in rows:
+        # Make sure we have a list of strings as requests/sec will
+        # be a float for sortability
+        row = [str(c) for c in row]
         table += delim.join(row) + '\n'
     return table
 
@@ -161,6 +164,8 @@ if __name__ == '__main__':
             benchmarks['transfer_sec'],
         ))
 
+    sort_index = HEADERS.index("requests/sec")
+    results = sorted(results, key=lambda r: -r[sort_index])
     table = generate_table(HEADERS, results)
     update_readme(table)
     runs = len(config)

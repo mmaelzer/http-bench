@@ -12,8 +12,9 @@ benchmarks
 ----------
 name | version | lang | avg latency | requests/sec | transfer/sec
 ------- | ------- | ------- | ------- | ------- | -------
-go stdlib | 1.5 | go | 563.08us | 61005.95 | 6.57MB
-node stdlib | 4.2.1 | js | 735.02us | 13987.15 | 2.08MB
-node cluster | 4.2.1 | js | 608.60us | 22926.30 | 3.41MB
-luvit | 2.6.0 | lua | 1.09ms | 9654.11 | 1.27MB
-tornado | 4.3 | python | 4.48ms | 2226.51 | 445.74KB
+go stdlib | 1.5 | go | 276.63us | 61530.5 | 6.63MB
+node cluster | 4.2.1 | js | 702.15us | 28121.71 | 4.18MB
+node stdlib | 4.2.1 | js | 553.71us | 18502.01 | 2.75MB
+dart stdlib | 1.12.2 | dart | 726.57us | 17846.62 | 3.47MB
+luvit | 2.6.0 | lua | 1.04ms | 9995.26 | 1.32MB
+tornado | 4.3 | python | 4.62ms | 2191.54 | 438.74KB

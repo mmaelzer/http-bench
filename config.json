@@ -1,4 +1,5 @@
 [
+
   {
     "name": "go stdlib",
     "version": "1.5",
@@ -31,5 +32,11 @@
     "language": "python",
     "command": ["python", "python/tornado_webserver.py"],
     "wait": 3
+  },
+  {
+    "name": "dart stdlib",
+    "version": "1.12.2",
+    "language": "dart",
+    "command": ["dart", "dart/dart_stdlib.dart"]
   }
 ]
