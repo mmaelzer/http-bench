@@ -145,7 +145,7 @@ def update_readme(table):
     readme = re.sub('benchmarks\n[\-]*[\s\S]*$', '', readme)
     readme += 'benchmarks\n'
     readme += '----------\n'
-    readme += 'Last run %s\n' % datetime.now().isoformat()
+    readme += 'Last run %s\n  \n  ' % datetime.now().isoformat()
     readme += table
 
     readme_file = open('readme.md', 'w')
