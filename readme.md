@@ -10,7 +10,8 @@ hardware specs
 
 benchmarks
 ----------
-Last run 2015-11-08T20:35:08.815148
+Last run 2015-11-08T20:35:08.815148  
+  
 name | version | lang | avg latency | requests/sec | transfer/sec
 ------- | ------- | ------- | ------- | ------- | -------
 go stdlib | 1.5 | go | 285.69us | 60699.66 | 6.54MB
