@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import argparse
+from datetime import datetime
 import functools
 import json
 import os
@@ -32,14 +33,18 @@ def run_cmd(stage, cmd):
         print 'No %s command. Skipping.' % stage
         return
 
-    print '%s: %s' % (stage, ' '.join(cmd))
-
+    options = {}
+    if isinstance(cmd, dict):
+        options = cmd
+        cmd = options.pop('command')
     # Handle a list of lists for multiple step setup/teardowns
-    if isinstance(cmd[0], list):
+    elif isinstance(cmd[0], list):
         for c in cmd:
             run_cmd(c, stage)
 
-    p = subprocess.Popen(args=cmd)
+    print '%s: %s' % (stage, ' '.join(cmd))
+
+    p = subprocess.Popen(args=cmd, **options)
     output, err = p.communicate()
     if err:
         print 'Error in %s: %s' % (stage, err)
@@ -84,14 +89,15 @@ def parse_wrk_output(output):
     }
 
 
-def execute(cmd, env=None, wait=None):
+def execute(cmd, env=None, wait=None, cwd=None):
     '''
     Build benchmark data for a given item in the configuration
     '''
     p = subprocess.Popen(args=cmd,
                          stdout=subprocess.PIPE,
                          stderr=subprocess.STDOUT,
-                         env=env)
+                         env=env,
+                         cwd=cwd)
     if wait is None:
         for line in iter(p.stdout.readline, b''):
             if line.strip() == 'begin benchmark':
@@ -107,6 +113,7 @@ def execute(cmd, env=None, wait=None):
 
     if err is not None:
         print 'Error during benchmark run of %s : %s', (err, cmd_str)
+        os.exit(1) 
 
     b_status = b.wait()
     p.terminate()
@@ -138,6 +145,7 @@ def update_readme(table):
     readme = re.sub('benchmarks\n[\-]*[\s\S]*$', '', readme)
     readme += 'benchmarks\n'
     readme += '----------\n'
+    readme += 'Last run %s\n' % datetime.now().isoformat()
     readme += table
 
     readme_file = open('readme.md', 'w')
@@ -153,7 +161,8 @@ if __name__ == '__main__':
         setup(proc.get('setup'))
         benchmarks = execute(proc.get('command'),
                              env=proc.get('env'),
-                             wait=proc.get('wait'))
+                             wait=proc.get('wait'),
+                             cwd=proc.get('cwd'))
         teardown(proc.get('teardown'))
         results.append((
             proc['name'],

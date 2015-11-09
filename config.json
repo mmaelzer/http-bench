@@ -1,5 +1,4 @@
 [
-
   {
     "name": "go stdlib",
     "version": "1.5",
@@ -38,5 +37,17 @@
     "version": "1.12.2",
     "language": "dart",
     "command": ["dart", "dart/dart_stdlib.dart"]
+  },
+  {
+    "name": "iron",
+    "version": "0.2.1",
+    "language": "rust",
+    "command": ["rust/iron_webserver/target/release/iron_webserver"],
+    "setup": {
+      "cwd": "rust/iron_webserver",
+      "command": ["cargo", "build", "--release"]
+    },
+    "teardown": ["rm", "-rf", "rust/iron_webserver/target"],
+    "sleep": 3
   }
 ]
