@@ -4,12 +4,14 @@ import argparse
 from datetime import datetime
 import functools
 import json
+import locale
 import os
 import re
 import signal
 import subprocess
 import time
 
+locale.setlocale(locale.LC_ALL, 'en_US')
 parser = argparse.ArgumentParser(description='Run benchmarks')
 parser.add_argument('--config',
                     dest='config',
@@ -127,13 +129,18 @@ def generate_table(headers, rows):
     delim = ' | '
     table = ''
     table += delim.join(headers) + '\n'
-    table += delim.join(['-------'] * len(headers)) + '\n'
+    table += delim.join(['------:'] * len(headers)) + '\n'
 
     for row in rows:
         # Make sure we have a list of strings as requests/sec will
         # be a float for sortability
-        row = [str(c) for c in row]
-        table += delim.join(row) + '\n'
+        formatted_row = []
+        for c in row:
+            if isinstance(c, float) or isinstance(c, int):
+                formatted_row.append(locale.format("%d", c, grouping=True))
+            else:
+                formatted_row.append(c)
+        table += delim.join(formatted_row) + '\n'
     return table
 
 
