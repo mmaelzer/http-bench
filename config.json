@@ -20,6 +20,12 @@
     "command": ["node", "js/cluster.js"]
   },
   {
+    "name": "express",
+    "version": "4.13.3",
+    "language": "js",
+    "command": ["node", "js/express_webserver.js"]
+  },
+  {
     "name": "luvit",
     "version": "2.6.0",
     "language": "lua",

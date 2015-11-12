@@ -1,0 +1,22 @@
+{
+  "name": "http-bench",
+  "version": "1.0.0",
+  "description": "Benchmarking http servers for fun and nonprofit",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mmaelzer/http-bench.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mmaelzer/http-bench/issues"
+  },
+  "homepage": "https://github.com/mmaelzer/http-bench#readme",
+  "dependencies": {
+    "express": "^4.13.3"
+  }
+}
