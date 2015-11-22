@@ -14,7 +14,7 @@ func handleHello(w http.ResponseWriter, r *http.Request) {
 
 func handleJson(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
-	j := make(map[string]interface{})
+	var j []map[string]interface{}
 	err := decoder.Decode(&j)
 	if err != nil {
 		panic(err)
