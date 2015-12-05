@@ -10,15 +10,15 @@ hardware specs
 
 benchmarks
 ----------
-Last run 2015-11-12T13:50:06.356060
+Last run 2015-12-04T20:22:25.570951
   
   name | version | lang | avg latency | requests/sec | transfer/sec
-------- | ------: | ------: | ------: | ------: | ------:
-go stdlib | 1.5 | go | 305.09us | 59,568 | 6.42MB
-node cluster | 4.2.1 | js | 550.39us | 23,269 | 3.46MB
-dart stdlib | 1.12.2 | dart | 731.24us | 18,108 | 3.52MB
-node stdlib | 4.2.1 | js | 739.66us | 13,880 | 2.07MB
-luvit | 2.6.0 | lua | 1.05ms | 9,939 | 1.31MB
-express | 4.13.3 | js | 1.41ms | 7,230 | 1.45MB
-iron | 0.2.1 | rust | 281.16us | 3,626 | 400.15KB
-tornado | 4.3 | python | 4.49ms | 2,222 | 444.94KB
+------: | ------: | ------: | ------: | ------: | ------:
+go stdlib | 1.5 | go | 250.00us | 61,694 | 6.65MB
+iron | 0.2.1 | rust | 175.98us | 49,399 | 5.32MB
+node cluster | 4.2.1 | js | 658.34us | 22,432 | 3.34MB
+dart stdlib | 1.12.2 | dart | 755.58us | 16,895 | 3.29MB
+node stdlib | 4.2.1 | js | 748.37us | 13,688 | 2.04MB
+luvit | 2.6.0 | lua | 1.08ms | 9,633 | 1.27MB
+express | 4.13.3 | js | 1.42ms | 7,211 | 1.44MB
+tornado | 4.3 | python | 5.53ms | 1,825 | 365.36KB

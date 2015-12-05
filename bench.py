@@ -185,4 +185,4 @@ if __name__ == '__main__':
     table = generate_table(HEADERS, results)
     update_readme(table)
     runs = len(config)
-    print 'Completed %s run%s' % (runs, 's' if runs > 1 else '')
+    print 'Completed %s benchmarks%s' % (runs, 's' if runs > 1 else '')
