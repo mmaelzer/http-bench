@@ -3,5 +3,5 @@ name = "iron_webserver"
 version = "0.1.0"
 authors = ["Mike Maelzer <mmaelzer@gmail.com>"]
 
-[dependencies]
-iron = "0.2.4"
+[dependencies.iron]
+version = "0.5.0"

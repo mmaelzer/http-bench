@@ -39,5 +39,5 @@ func main() {
 
 	fmt.Println("=== server running on 127.0.0.1:8080 ===")
 	fmt.Println("begin benchmark")
-	http.ListenAndServe(":8080", nil)
+	fmt.Println(http.ListenAndServe(":8080", nil))
 }

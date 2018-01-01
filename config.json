@@ -1,21 +1,29 @@
 [
   {
     "name": "go stdlib",
-    "version": "1.5",
+    "version": "1.9.2",
     "language": "go",
-    "setup": ["go", "build", "go/webserver.go"],
+    "setup": ["go", "build", "go/stdlib/webserver.go"],
+    "command": ["./webserver"],
+    "teardown": ["rm", "webserver"]
+  },
+  {
+    "name": "go fasthttp",
+    "version": "1",
+    "language": "go",
+    "setup": ["go", "build", "go/fasthttp/webserver.go"],
     "command": ["./webserver"],
     "teardown": ["rm", "webserver"]
   },
   {
     "name": "node stdlib",
-    "version": "4.2.1",
+    "version": "9.3.0",
     "language": "js",
     "command": ["node", "js/nodehttp.js"]
   },
   {
     "name": "node cluster",
-    "version": "4.2.1",
+    "version": "9.3.0",
     "language": "js",
     "command": ["node", "js/cluster.js"]
   },
@@ -33,20 +41,20 @@
   },
   {
     "name": "tornado",
-    "version": "4.3",
+    "version": "4.5.2",
     "language": "python",
     "command": ["python", "python/tornado_webserver.py"],
     "wait": 3
   },
   {
     "name": "dart stdlib",
-    "version": "1.12.2",
+    "version": "1.24.3",
     "language": "dart",
     "command": ["dart", "dart/dart_stdlib.dart"]
   },
   {
     "name": "iron",
-    "version": "0.2.4",
+    "version": "0.5.0",
     "language": "rust",
     "command": ["rust/iron_webserver/target/release/iron_webserver"],
     "setup": {
